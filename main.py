@@ -56,12 +56,12 @@ sleep(3) # 3초 대기
 
 cards = []
 
-cards_elements = driver.find_elements_by_css_selector('.cl-layout-content > .card')
+cards_elements = driver.find_elements(by=By.CSS_SELECTOR, value='.cl-layout-content > .card')
 for card_element in cards_elements:
   card = {}
   # print(card_element.text)
   badges = []
-  badges_elements = card_element.find_elements_by_css_selector('.badge')
+  badges_elements = card_element.find_elements(by=By.CSS_SELECTOR, value='.badge')
   for badge_element in badges_elements:
     # print('----------------------------')
     # print(badge_element.text)
@@ -69,12 +69,25 @@ for card_element in cards_elements:
   # print('----------------------------')
   card['badges'] = badges
   
-  title_element = card_element.find_element_by_css_selector('.card-tit')
+  title_element = card_element.find_element(by=By.CSS_SELECTOR, value='.card-tit')
   card['title'] = title_element.text
 
-  sub_title_element = card_element.find_element_by_css_selector('.card-subtit')
+  sub_title_element = card_element.find_element(by=By.CSS_SELECTOR, value='.card-subtit')
   card['sub_title'] = sub_title_element.text
-  
+
+  sub_content_elements = card_element.find_elements(by=By.CSS_SELECTOR, value='.blt-tit ~ .cl-control')
+  card['contact'] = sub_content_elements[0].text
+  card['period'] = sub_content_elements[1].text
+  card['type'] = sub_content_elements[2].text
+  card['department'] = sub_content_elements[3].text
+
+  button_element = card_element.find_element(by=By.CSS_SELECTOR, value='.btn-secondary')
+  button_element.click()
+
+  sleep(3) # 3초 대기
+
+  driver.execute_script("window.history.go(-1)")
+
 
   cards.append(card)
 
